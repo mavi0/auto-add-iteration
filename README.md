@@ -1,6 +1,7 @@
-# Move to next iteration
 
-Automatically move issues and pull requests to the next iteration of your [GitHub project](https://docs.github.com/en/issues/planning-and-tracking-with-projects/learning-about-projects/about-projects) with this [Github Action](https://github.com/features/actions).
+# Auto add iteraiton
+
+Automatically add issues and pull requests to the current iteration of your [GitHub project](https://docs.github.com/en/issues/planning-and-tracking-with-projects/learning-about-projects/about-projects) with this [Github Action](https://github.com/features/actions).
 
 ## Example
 
@@ -11,76 +12,45 @@ on:
     - cron: '0 5 * * 1'
 
 jobs:
-  move-to-next-iteration:
+  auto-add-iteration:
     name: Move to next iteration
     runs-on: ubuntu-latest
 
     steps:
-    - uses: blombard/move-to-next-iteration@master
+    - uses: mavi0/auto-add-iteration@master
       with:
         owner: OrgName
         number: 1
         token: ${{ secrets.PROJECT_PAT }}
         iteration-field: Iteration
-        iteration: last
         new-iteration: current
-        statuses: 'Todo,In Progress,In Review'
+        default-status: To Do
 ```
 
-Alternatively, you may specify `excluded-statuses`. In this case, all items that _don’t_ have these statuses will be moved to the new iteration. (Note that if `excluded-statuses` is used, `statuses` will be ignored.)
+### Customizing Default Status
 
-```yaml
-on:
-  schedule:
-    # Runs "at 05:00, only on Monday" (see https://crontab.guru)
-    - cron: '0 5 * * 1'
-
-jobs:
-  move-to-next-iteration:
-    name: Move to next iteration
-    runs-on: ubuntu-latest
-
-    steps:
-    - uses: blombard/move-to-next-iteration@master
-      with:
-        owner: OrgName
-        number: 1
-        token: ${{ secrets.PROJECT_PAT }}
-        iteration-field: Iteration
-        iteration: last
-        new-iteration: current
-        excluded-statuses: "Done,Won't Fix"
-```
+This workflow automatically assigns a default status (e.g., `To Do`) to items that do not have a status assigned. The default status can be specified using the `default-status` input parameter.
 
 ## Inputs
-#### owner
+
+### `owner`
 The account name of the GitHub organization.
 
-#### number
+### `number`
 Project number as you see it in the URL of the project.
 
-#### token
-Personal access token or an OAuth token. the `project` scope is required.
+### `token`
+Personal access token or an OAuth token. The `write:org` scope is required for read-write access.
 
-#### iteration-field
+### `iteration-field`
 The name of your iteration field.
 
-#### iteration
-Should be `last` or `current`.
-
-#### new-iteration
+### `new-iteration`
 Should be `current` or `next`.
 
-#### statuses
-Statuses of the issues to move to the next iteration.
+### `default-status`
+The default status to assign to items that do not already have a status. For example: `To Do`.
 
-⚠️ _This setting is ignored if `excluded-statuses` is provided. See below._ ⚠️
+---
 
-#### excluded-statuses
-Statuses of the issues that should _not_ be moved.
-
-⚠️ _This setting takes precedence over `statuses`._ ⚠️
-
-## Sources
-
-This action was made possible thanks to https://github.com/gr2m/github-project.
+Based on a fork of [move-to-next-iteration](https://github.com/blombard/move-to-next-iteration) by [blombard](https://github.com/blombard) which is in turn made possible with thanks to [github-project](https://github.com/gr2m/github-project) by (gr2m)[https://github.com/gr2m].

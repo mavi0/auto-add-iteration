@@ -1,9 +1,11 @@
-name: "Move to next iteration"
-description: "Automatically move issues to the next iteration."
-author: "Baptiste Lombard"
+name: Auto add iteration
+
+description: Automatically add iteration.
+author: mavi0
 branding:
-  icon: "calendar"
-  color: "blue"
+  icon: calendar
+  color: blue
+
 inputs:
   owner:
     description: The account name of the GitHub organization.
@@ -17,18 +19,13 @@ inputs:
   iteration-field:
     description: The name of your iteration field.
     required: true
-  iteration:
-    description: Should be last or current.
-    required: true
   new-iteration:
     description: Should be current or next.
     required: true
-  statuses:
-    description: Statuses of the issues to move to the next iteration.
-    required: false
-  excluded-statuses:
-    description: Statuses of the issues that should not be moved. This setting takes precedence over statuses.
-    required: false
+  default-status:
+    description: Default status to assign to items without a status.
+    required: true
+
 runs:
-  using: "node20"
-  main: "dist/index.js"
+  using: node20
+  main: dist/index.js
